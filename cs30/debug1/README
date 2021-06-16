@@ -1,0 +1,120 @@
+==========HEADER===============================================================
+Name:	Xinyi Bian
+Userid:	cs30xfw
+Date:	2.23.2018
+==========Error================================================================
+1. Compilation Error:
+Assembling each assembly source file separately ...
+gcc -c -g reverse.s
+reverse.s: Assembler messages:
+reverse.s: Error: unaligned opcodes detected in executable segment
+Makefile:38: recipe for target 'reverse.o' failed
+make: *** [reverse.o] Error 1
+
+reverse.s:
+Add a line on Line 15:
+	.align	2
+Reason:
+Allocate space
+
+2. Code Error:
+reverse.s:
+Add line 38:
+	add	fp, sp, FP_OFFSET
+Reason:
+Manually set fp
+
+3. Compilation Error:
+gcc -c -g findEnd.s
+findEnd.s: Assembler messages:
+findEnd.s:60: Error: internal_relocation (type: OFFSET_IMM) not fixed up
+Makefile:38: recipe for target 'findEnd.o' failed
+
+findEnd.s:
+Line 60 Before:
+	str     r5, r1        	@ store ptr to last char
+Change to:
+	str     r5, [r1]        @ store ptr to last char
+Reason:
+store r5 to addr of r1
+
+4. Code Error:
+findEnd.s:
+Line 57 Before:
+	push    {fp, lr}                @ Prologue
+Change to:
+	push	{r4-r7, fp, lr}
+Line 64 Before:
+	pop     {fp, pc}                @ Return from function
+Change to:
+	pop	{r4-r7, fp, pc}
+Line 15 Before:
+	.equ    FP_OFFSET, 4   		@ (# of saved regs - 1) * 4
+Change to:
+	.equ    FP_OFFSET, 20   	@ (# of saved regs - 1) * 4
+Reason:
+Need to push registers
+
+5. Output Error:
+$ ./reverseString
+You found 0 palindrome(s) 
+
+main.c:
+Line 30 Before:
+ if (argc == 0) {
+Change to:
+ if (argc == 1) {
+Reason:
+argc includes execution
+
+6. Code Error:
+swapChars.s:
+Line 64 Before:
+         pop     {fp, lr}                @ Return from function
+Change to:
+         pop     {fp, pc}                @ Return from function
+Reason:
+pop lr instead of pc
+
+7. Wrong Output:
+$ ./reverseString potatoes
+Before: potatoes
+Illegal instruction
+
+Use gdb:
+Program received signal SIGILL, Illegal instruction.
+0x00010698 in findEnd () at findEnd.s:41
+41		ldrb	r6, [r0]	@ Get 1st char of str
+
+findEnd.s:
+Line 13 Before:
+	.skip	2
+Change to:
+	.align	2	
+Reason:
+Allocate space
+
+8. Runtime Error:
+$ ./reverseString potatoes
+Before: potatoes
+After: potatoes
+
+You found 0 palindrome(s)
+
+Change to line 51:
+        add     r5, r0, -1      @ adjust str to point back to last char
+Reason:
+Will not execute this line.
+
+reverse.s:
+Change r3 to r7:
+         mov     r7, r0                         
+Reason:
+r3 will change values after calling function.
+
+9. Runtime Error:
+reverse.s:
+Add line 49:
+	ldr	r6, [r6]
+Reason:
+Need to load the value of the addr.

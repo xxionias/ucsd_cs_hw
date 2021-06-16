@@ -1,0 +1,115 @@
+==========DEBUG2 README========================================================
+Author:	Xinyi Bian
+Userid: cs30xfw
+Date:   3/7/2018
+==========BUG==================================================================
+1. Compiler warning:
+main.c:120:72: warning: passing argument 5 of 'guessLetter' makes pointer from 
+integer without a cast
+         guessLetter(*commandArg, guessBuf, answerBuf, &lettersChanged, up);
+                                                                        ^
+In file included from main.c:18:0:
+hangman.h:20:6: note: expected 'char *' but argument is of type 'char'
+ void guessLetter(char letter, char * guessBuf, char * answerBuf, int * count,
+      ^
+main.c:120:9: warning: 'up' may be used uninitialized in this function 
+[-Wmaybe-uninitialized]
+         guessLetter(*commandArg, guessBuf, answerBuf, &lettersChanged, up);
+
+File: main.c
+Line: 120
+Original:
+	 guessLetter(*commandArg, guessBuf, answerBuf, &lettersChanged, &up);
+Change to:
+	 guessLetter(*commandArg, guessBuf, answerBuf, &lettersChanged, &up);
+
+2. Compiler Error:
+main.o: In function `main':
+/home/linux/ieng6/cs30x/cs30xfw/debug2/main.c:82: undefined reference to `initGuess'
+collect2: error: ld returned 1 exit status
+Makefile:53: recipe for target 'hangman' failed
+make: *** [hangman] Error 1
+
+File: initGuess.s
+Line: 43
+Original:
+	intGuess:
+Change to:
+	initGuess:
+
+3. Functionality/Runtime Error:
+Your phrase should contain only alphabetical characters and punctuation.
+hangman> You can't guess me!
+
+File: main.c
+Line: 56
+Original:
+	size = sizeof(answerBuf)
+Change to:
+	size = strlen(answerBuf)
+
+4. Functionality/Runtime Error:
+hangman> letter l
+Segmentation fault
+
+File: main.c
+Line: 89
+Original:
+	char * commandArg = NULL; // Holds the command argument (if any).
+Change to:
+	char commandArg[BUFSIZ]; // Holds the command argument (if any).
+
+5. Functionality/Runtime Error:
+hangman> letter h
+^C
+
+File: guessLetter.s
+Line: 19
+Original:
+	.equ    FP_OFFSET, (9 - 1) * 4
+Change to:
+	.equ    FP_OFFSET, (10 - 1) * 4
+
+6. Functionality/Runtime Error:
+ngman> phrase Hello World
+
+Nice work, you revealed 11 blanks!
+
+	  ||=====
+	  ||    |
+	  ||     
+	  ||     
+	  ||     
+	  ||     
+	======   
+ >> H e l l o   W o r l d ! <<
+
+File: guessPhrase.c
+Line: 32
+Original:
+	if (strcmp(phrase, answerBuf)) {
+Change to:
+	if (!strcmp(phrase, answerBuf)) {
+
+7. Functionality/Runtime Error:
+>> ~   _   _   _   _   _   _   _   _   _   _   '   _     _   _   _   _   _   _
+~   V   E   G   E   T   A   R   I   A   N   '   S     S   A   S   H   I   M   
+I ~   <<
+
+File: main.c
+Add a line to line 55:
+	answerBuf[MAX_PHRASE_LEN-1] = 0;
+
+8. Functionality/Runtime Error:
+hangman> letter a
+
+You didn't reveal any letters :(
+You have 5 mistakes left.
+
+File: guessLetter.s
+Original line: 74
+	strb	r5, [fp, CASE_DIFF_OFFSET]
+Add a line at line 74 and change the original line 74:
+	ldr     r6, [fp, CASE_DIFF_OFFSET]
+        strb    r5, [r6]                        @ *caseDiff = CASE_MATCH
+  
