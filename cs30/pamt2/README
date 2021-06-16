@@ -1,0 +1,133 @@
+==========PAMT2 README==========================================================
+Author:	Xinyi Bian
+Userid: cs30xfw
+Date:   3/9/2018
+==========Description===========================================================
+The program takes a list of long long integers (64 bits) and displays info on
+whether each number is prime, how many factors each number has and how long it
+took to determine the number of factors both sequentially and with parallel 
+multi-threading.
+==========Compilation===========================================================
+cd pamt2
+make
+Makefile tells compiler the target to compile.
+==========Run===================================================================
+./pamt2 number
+Example: ./pamt2 12345678
+==========Normal Output=========================================================
+./pamt2 16
+Sequential numOfFactors for 16
+16 is not prime
+Number of factors: 4
+Completed in 0 sec
+Number of threads = 8
+Async-get parallel numOfFactors for 16
+16 is not prime
+Number of factors: 4
+Completed in 0.000134 sec
+Speed-up: 0
+
+Normal output goes to stdout.
+==========Error Output==========================================================
+1. number too small:
+./pamt2 5 Sequential numOfFactors for 5
+5 is prime
+Number of factors: 1
+Completed in 1e-06 sec
+5 is too small to run multi-threading version
+Try a value >= 16
+
+2. number too large:
+./pamt2 9999999999999999 9999999999999999 is too large to run. Try a value <= 
+to 4294967296
+
+Error output goes to stderr.
+==========Test==================================================================
+Run "./pamt2" and "~/../publc/debug2test" with random number from 16 to
+4294967291. Redirect the outcome separately to MYSOL and REFSOL. diff MYSOL and
+REFSOL. If no output the outcome is the same.
+==========Answers===============================================================
+1. Run on ieng6:
+./pamt2 4294967291
+Sequential numOfFactors for 4294967291
+4294967291 is prime
+Number of factors: 1
+Completed in 42.2838 sec
+
+Number of threads = 8
+Async-get parallel numOfFactors for 4294967291
+4294967291 is prime
+Number of factors: 1
+Completed in 8.22632 sec
+
+Speed-up: 5.14007
+ 
+It doesn't matter if the number is prime/non-prime because the algorithm 
+requires looping through 2 to the number and there is no difference in the
+times of loop between prime and non-prime numbers.
+
+2. 
+1) Run on ieng6:
+equential numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 37.448 sec
+
+Number of threads = 4
+Async-get parallel numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 10.9972 sec
+
+Speed-up: 3.40523
+
+Sequential numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 4.26152 sec
+
+Number of threads = 8
+Async-get parallel numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 0.813857 sec
+
+Speed-up: 5.2362
+
+2) Run on workstation:
+./pamt2 429496777
+Sequential numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 3.06935 sec
+
+Number of threads = 8
+Async-get parallel numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 0.621919 sec
+
+Speed-up: 4.93528
+
+3) Run on pi-cluster:
+./pamt2 429496777
+Sequential numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 37.448 sec
+
+Number of threads = 4
+Async-get parallel numOfFactors for 429496777
+429496777 is not prime
+Number of factors: 7
+Completed in 10.9972 sec
+
+Speed-up: 3.40523
+
+The time it takes to complete the sequential and parallel versions is the
+most important.
+
+3. ieng6:       40000
+   workstation: 15000
+   pi-cluster:  12000
+ 
