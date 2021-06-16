@@ -1,0 +1,223 @@
+/* 
+ * Filename:	README
+ * Author:	Xinyi Bian
+ * Userid:	cs30xfw
+ * Description: Answers 
+ * Date:	2.28.2018
+ * Source:	Course website
+ */
+==========PA3 README============================================================
+Author:	Xinyi Bian
+Userid:	cs30xfw
+Date:	2.28.2018
+==========Description===========================================================
+PA3 aims at hunting for anagrams.
+1. Spawn:
+This non-interactive program will load words from a dictionary file into memory,
+spawn anagram data for every word in the dictionary, and then spawn an output
+file of anagram data. This program simply reports how many words anagram data 
+was created for, and outputs the anagram file.
+2. Hunt:
+This interactive program takes in an anagram file and continuously prompts the
+user to enter words to hunt for anagrams of. The program will then list out all
+the anagrams of the entered word, or report that no anagrams were found.
+==========Compilation===========================================================
+cd pa3
+make
+Directories should be ~/pa3.
+Makefile tells compiler the target to compile.
+==========Run File==============================================================
+1. Spawn 
+a) ./spawn
+Default dictionary file and default anagram file to output.
+b) ./spawn -h
+Print usage info.
+c) ./spawn -d dictionaryFile
+Specify name of the dictionary file to use.
+d) ./spawn -a anagramFile
+Specify name of anagram file to output.
+2. Hunt:
+./hunt anagramFile
+Read in from anagramFile and interactively search for anagrams from it.
+==========Normal Output=========================================================
+1. Spawn:
+a) Default:
+./spawn
+
+Spawned anagram array with 99171 anagrams.
+
+Spawned anagram file (anagramPrey.ao) with 99171 anagrams.
+
+b) Specify dictionary file:
+./spawn -d sample.dict
+     
+Spawned anagram array with 23 anagrams.
+     
+Spawned anagram file (anagramPrey.ao) with 23 anagrams.
+
+c) Specify output file:
+./spawn -d sample.dict -a sample_out 
+
+Spawned anagram array with 23 anagrams.
+
+Spawned anagram file (sample_out.ao) with 23 anagrams.
+
+2. Hunt:
+./hunt anagramPrey.ao
+
+Reading anagram file (anagramPrey.ao) with 99171 anagrams. 
+
+Loaded anagram array with 99171 anagrams.
+
+Enter a word to hunt for anagrams [^D to exit]: stop 
+
+Anagram(s) are: Post opts post pots spot tops
+
+Enter a word to hunt for anagrams [^D to exit]: ptso 
+
+Anagram(s) are: Post opts post pots spot stop tops
+
+Enter a word to hunt for anagrams [^D to exit]: SANTA 
+
+Anagram(s) are: Satan
+
+Enter a word to hunt for anagrams [^D to exit]: santa 
+
+Anagram(s) are: Satan
+
+Enter a word to hunt for anagrams [^D to exit]: snata 
+
+Anagram(s) are: Santa Satan
+
+Enter a word to hunt for anagrams [^D to exit]: aaaaaaaaaaaaaaa 
+
+No anagrams found.
+
+Enter a word to hunt for anagrams [^D to exit]: nagramas 
+
+Anagram(s) are: anagrams
+
+Enter a word to hunt for anagrams [^D to exit]: ^D
+
+Normal output goes to stdout pipe.
+==========Error Output=========================================================
+1.  Spawn:
+1.1 Too many arguments( extra argument )
+./spawn extra
+     Extra operand 'extra'.
+
+Usage: ./spawn [-d dictionaryFile] [-a anagramFile]
+Try './spawn -h' for more information.
+
+1.2 Invalid flags
+./spawn -k 
+	./spawn: invalid option -- 'k'
+Usage: ./spawn [-d dictionaryFile] [-a anagramFile]
+Try './spawn -h' for more information.
+
+1.3 Missing argument for flag
+./spawn -d 
+	./spawn: option requires an argument -- 'd'
+
+Usage: ./spawn [-d dictionaryFile] [-a anagramFile]
+Try './spawn -h' for more information.
+
+1.4 Invalid filename
+./spawn -d badfile
+     Error opening dictionary file (badfile); invalid file.
+
+1.5 Permission denied to file
+./spawn -d cantTouchThis
+	Error opening dictionary file (cantTouchThis); permission denied.
+
+2.  Hunt:
+2.1 No arguments
+./hunt
+
+Usage: ./hunt anagramFile
+    anagramFile    (file extension must end in ".ao")
+                   (file size must be divisible by sizeof(Anagram))
+
+2.2 Too many arguments
+./hunt anagramPrey.ao anagramPrey.ao
+
+Usage: ./hunt anagramFile
+    anagramFile    (file extension must end in ".ao")
+                   (file size must be divisible by sizeof(Anagram))
+
+2.3 Anagram file does not end in ao
+./hunt anagramPrey
+	Error opening anagram file (anagramPrey); must have .ao extension.
+
+2.4 Nonexistent anagram file
+./hunt badfile.ao
+     Error opening anagram file (badfile.ao); invalid file.
+
+2.5 Permission denied to file
+./hunt cantTouchThis.ao
+	Error opening anagram file (cantTouchThis.ao); permission denied.
+
+2.6 Anagram file is not a valid anagram file
+./hunt notAnAnagramFile.ao
+	Error reading anagram file (notAnAnagramFile.ao); corrupt file (invalid 
+file length).
+
+2.7 Anagram file is not the correct length
+./hunt corrupt.ao
+	Error reading anagram file (corrupt.ao); corrupt file (invalid file 
+length).
+
+Error output goes to stderr.
+==========Testing==============================================================
+1. Spawn
+Run "./spawn" on both ~/./public/pa3testSpawn and my own ./spawn. Redirect the 
+output into file named output and myoutput separately. Use "diff" to compare the 
+two output files. If "diff" generates nothing, it means that the pa3 generates 
+the same output as the pa3test.
+2. Hunt
+Run "./hunt anagramPrey.ao" on both ~/./public/pa3testHunt and my own ./hunt. 
+Compare the results to see if there is any difference.
+3. spawnKey.c
+simple word, all caps no sorted;
+simple word, all caps, sort;
+simple word, no caps, sort;
+simple word, oversized keyLen;
+simple word, small keyLen;
+check truncation before sort;
+check long word;
+4. compareChar.s
+less than;
+greater than;
+equal to;
+less than(symbols)
+5. compareAnagram.s
+Key less than;
+Key greater than;
+Key equal word less;
+Key equal word greater;
+Key equal word equal;
+word less than (symbols);
+word greater than (symbols);
+6. spawnAnagram.s
+generic word;
+generic word, word=key
+mixed word;
+very long word;
+7.compareKey.s
+Key less than;
+Key greater than;
+Key equal;
+Key less ( random key );
+==========Answers to questions=================================================
+1. cd ~
+   vi .vimrc
+   (insert mode)
+   syntax on
+   :colors desert
+2. 42G; 
+   42gg
+3. /Anagram
+   Press n key to view next occurence
+4. vim +42 foo.c
+5. Tab
+6. Tell them doing homework on their own helps them learn better.
