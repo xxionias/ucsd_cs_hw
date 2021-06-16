@@ -1,0 +1,151 @@
+/* 
+ * Filename:	README
+ * Author:	Xinyi Bian
+ * Userid:	cs30xfw
+ * Description: Answers 
+ * Date:	3.14.2018
+ * Source:	Course website
+ */
+==========PA4 README============================================================
+Author:	Xinyi Bian
+Userid:	cs30xfw
+Date:	3.14.2018
+==========Description===========================================================
+The program will read in a binary file and output to stdout the bytes of the 
+file in either hex, octal, or ASCII values. It can also change the endianness of
+the output. The "-u" or "-undump" option can take a previously created hex dump
+from the program and convert it back into the original file format.
+==========Compilation===========================================================
+cd pa4
+make
+Directories should be ~/pa4.
+Makefile tells compiler the target to compile.
+==========Run File==============================================================
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+==========Normal Output=========================================================
+1. "-h" entered:
+./myxd -h
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+Options:
+ -h/--help:		Print this help message.
+ -x/--hex:		Output bytes as hexadecimal.
+ -o/--octal:		Output bytes as octal.
+ -c/--ascii:		Output bytes as ASCII.
+ -s/--string:		Strings mode.
+ -b/--big-endian:	Convert data to big-endian.
+ -l/--little-endian:	Convert data to little-endian.
+ -r/--range:		Only print range from file.
+			Must be in the form start:end, end > start.
+ -u/--undump:		Convert hexdump into binary. Writes out to file.
+
+2. Convert format specified:
+cat sample1
+This is one sample file.
+./myxd -x sample1    
+0000000: 5468 6973 2069 7320 6f6e 6520 7361 6d70 
+0000010: 6c65 2066 696c 652e 0a
+
+3. Endianness specified:
+ ./myxd -x -b sample1
+0000000: 7369 6854 2073 6920 2065 6e6f 706d 6173 
+0000010: 6620 656c 2e65 6c69 0000 000a
+Normal output goes to stdout pipe.
+
+4. Range specified:
+./myxd -x -r 1:5 sample1
+0000001: 6869 7320 
+
+5. Undump:
+./myxd -x sample1 > sample1hex
+./myxd -x -u sample1undump sample1hex
+cat sample1undump 
+This is one sample file.
+
+Normal output goes to stdout.
+==========Error Output=========================================================
+1. No infile
+./myxd -x     
+Error: Incorrect number of positional arguments.
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+2. Infile invalid
+./myxd -x nosuchfile
+nosuchfile: No such file or directory
+
+3. Too many type flags
+/myxd -x -o nosuchfile
+Error: Only one of -x, -c, -o, -s may be specified.
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+4. Has both endian flags
+ ./myxd -x -b -l nosuchfile
+Error: Only one of -b or -l may be specified.
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+5. Invalid flag
+./myxd -x -b -p nosuchfile
+./myxd: invalid option -- 'p'
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+6. Extra input
+./myxd -o sample1 extra
+Error: Incorrect number of positional arguments.
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+7. Range no args
+./myxd -x -b -r sample1   
+Error: Incorrect number of positional arguments.
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+8. Undump no args
+./myxd -u sample1he
+Error: Incorrect number of positional arguments.
+./myxd [-h] [-x | -o | -c | -s] [-l | -b] [-r range] [-u outfile] INFILE
+
+Error output goes to stderr.
+==========Testing==============================================================
+Running same instructions on "~/../public/pa4test" and my own "./myxd". 
+Indirect the output to REFSOL and MYSOL separately. Compare the two files using
+"diff". If no output pops, the program has the same output.
+
+- Testing parseLong.s
+numerical
+negative numerical
+zero
+value > LONG_MAX
+value < LONG_MIN
+nonnumerical
+
+- Testing parseRange.s
+valid range
+start >= end
+negative start/end
+invalid range string
+start/end out of range
+
+- Testing convertOrder.s
+convert chars (letters)
+convert chars (numbers)
+convert upper char
+convert w/zeros
+convert hex bytes
+
+- Testing evaluateArgs.c
+type flag no args
+range flag no args
+undump flag no args
+extra args
+invalid infile
+too many type flags
+both endian flags
+invalid flag
+help flag
+==========Answers to questions=================================================
+1. ctrl-a will increment the next #
+   ctrl-x will decrement the next #
+2. g~ then move the cursor
+3. grep -n bar foo.txt
+4. "." to repeat last change in normal mode.
+   "@:" to repeat last change in command mode. 
+5. Read "How to excel with integrity" on the CSE30 webisite again and again.
