@@ -1,0 +1,61 @@
+/* 
+ * Filename:	README
+ * Author:	Xinyi Bian
+ * Userid:	cs30xfw
+ * Description: Answers 
+ * Date:	2.23.2018
+ * Source:	Course website
+ */
+==========PAMT1 README============================================================
+Author:	Xinyi Bian
+Userid:	cs30xfw
+Date:	2,23.2018
+==========Description===========================================================
+PAMT1 takes in a size of the array and will initialize with random values and
+then have its squared sum, min, and max calculated, sequentially in one thread
+and then in parallel over multiple threads.
+==========Compilation===========================================================
+cd pamt1
+make
+Directories should be ~/pamt1.
+Makefile tells compiler the target to compile.
+==========Run File==============================================================
+./squaredSumMinMax array_size 
+==========Normal Output=========================================================
+./squaredSumMinMax 987654321 
+Initializing array (size = 987654321) with random values
+......................... Done
+Sequential squared sum, min, max (be patient)
+Squared Sum is: 5378110202388
+Min value is: -128
+Max value is: 127
+Completed in 0.525141 sec
+Async-get parallel squared sum, min, max
+Number of threads = 8
+Squared Sum is: 5378110202388
+Min value is: -128
+Max value is: 127
+Completed in 0.125501 sec
+Speed-up: 4.184357
+
+Normal output goes to stdout pipe.
+==========Error Output=========================================================
+./squaredSumMinMax 21474836479
+
+age: ./squaredSumMinMax array_size
+   array_size  (must be positive integer)
+
+Error output goes to stderr.
+==========Testing==============================================================
+I tried array size larger than 2147483647, which is the INT_MAX to try to see
+the error message printed; Also I tried same numbers several times to see if 
+the time spent is reasonable.
+==========Answers to questions=================================================
+1. Because there are 8 threads which will increase the variability of time 
+   calculating the statistics. 
+2. Workstation has a faster execution time; ieng6 has a faster speed-up time.
+   For large array size ieng6 works faster while small array size workstation
+   works faster. I would pick faster execution time because time is the 
+   measure of efficiency.
+3. Because it doesn't take the time to split to threads.
+4. ieng6; 1000000
