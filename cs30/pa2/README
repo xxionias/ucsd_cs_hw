@@ -1,0 +1,202 @@
+/* 
+ * Filename:	README
+ * Author:	Xinyi Bian
+ * Userid:	cs30xfw
+ * Description: Answers 
+ * Date:	2.13.2018
+ * Source:	Course website
+ */
+==========PA2 README============================================================
+Author:	Xinyi Bian
+Userid:	cs30xfw
+Date:	2,13.2018
+==========Description===========================================================
+PA2 is a Display Lights Program that aims at managing stage lights. This program
+can set, clear, toggle, shift, rotate, and ripple their bank of lights. For this
+assignment, we are working with 2 banks of lights, each with 32 lights. The goal
+is to create a program that can read in specific instructions to manipulate the 
+light patterns of each bank. The program can be executed either by interactive 
+mode with user inputs or with input files that contain the specific instructions. 
+The program also needs to check if the input is valid and if is not, it will 
+prompt the user accordingly to the errors.
+==========Compilation===========================================================
+cd pa2
+make
+Directories should be ~/pa2.
+Makefile tells compiler the target to compile.
+==========Run File==============================================================
+1. Interactive Mode 
+./pa2
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+> set/clear/toggle pattern0 pattern1
+or
+> shift/rotate/ripple shift/rotate/rippleCnt
+or 
+> help/quit
+2. Read-from-file Mode:
+./pa2 [filename]
+or
+./pa2 < [filename]
+or 
+cat [filename] | ./pa2
+==========Normal Output=========================================================
+1. Interactive Mode:
+./pa2
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- 
+> help
+The available commands are:
+      set    bank0BitPattern bank1BitPattern
+      clear  bank0BitPattern bank1BitPattern
+      toggle bank0BitPattern bank1BitPattern
+      shift  shiftCount
+      rotate rotateCount
+      ripple rippleCount
+      help
+      quit
+> set 0xf0f0f0f0 0x01010101
+**** ---- **** ---- **** ---- **** ---- ---- ---* ---- ---* ---- ---* ---- ---* 
+> clear 0xf0f0f0f0 0x01010101
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- 
+> set 0xf0f0f0f0 0x01010101
+**** ---- **** ---- **** ---- **** ---- ---- ---* ---- ---* ---- ---* ---- ---* 
+> set 0x83838383 0x38383838
+**** --** **** --** **** --** **** --** --** *--* --** *--* --** *--* --** *--* 
+> clear 0xf0f0f0f0 0x01010101
+---- --** ---- --** ---- --** ---- --** --** *--- --** *--- --** *--- --** *--- 
+> clear 0 0x00000008
+---- --** ---- --** ---- --** ---- --** --** *--- --** *--- --** *--- --** ---- 
+> toggle 1 15
+---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** **** 
+> shift -3
+---* *--- ---* *--- ---* *--- ---* ---* **-- ---* **-- ---* **-- ---* **** *--- 
+> shift 3
+---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** **** 
+> rotate 8
+--** **** ---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- 
+> rotate -8
+---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** **** 
+> ripple 6
+*--- ---* *--- ---* *--- ---* *--- ---* ---* **-- ---* **-- ---* **-- ---* **** 
+**-- ---- **-- ---- **-- ---- **-- ---- *--- ***- ---- ***- ---- ***- ---- **** 
+***- ---- -**- ---- -**- ---- -**- ---- -*-- -*** ---- -*** ---- -*** ---- -*** 
+**** ---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** 
+**** *--- ---* *--- ---* *--- ---* *--- ---* ---* **-- ---* **-- ---* **-- ---* 
+**** **-- ---- **-- ---- **-- ---- **-- ---- *--- ***- ---- ***- ---- ***- ---- 
+> ripple -6
+**** *--- ---* *--- ---* *--- ---* *--- ---* ---* **-- ---* **-- ---* **-- ---* 
+**** ---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** 
+***- ---- -**- ---- -**- ---- -**- ---- -*-- -*** ---- -*** ---- -*** ---- -*** 
+**-- ---- **-- ---- **-- ---- **-- ---- *--- ***- ---- ***- ---- ***- ---- **** 
+*--- ---* *--- ---* *--- ---* *--- ---* ---* **-- ---* **-- ---* **-- ---* **** 
+---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** **** 
+> shift 3
+---- ---- -**- ---- -**- ---- -**- ---- -*-- -*** ---- -*** ---- -*** ---- -*** 
+> shift -3
+---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** *--- 
+> shift 67
+---- ---- -**- ---- -**- ---- -**- ---- -*-- -*** ---- -*** ---- -*** ---- -*** 
+> shift -67
+---- --** ---- --** ---- --** ---- --*- --** *--- --** *--- --** *--- --** *--- 
+> quit
+Normal output goes to stdout pipe.
+==========Error Output=========================================================
+1. Errors in Interactive Mode
+a. Bad command
+Example:
+> se
+Bad command. Type "help" for more info.
+b. Arguments required
+Example:
+> set
+Argument(s) required for this command. Type "help" for more info.
+c. 2nd arguments required
+Example:
+> set 0x00
+A 2nd argument is required for this command.
+d. Not an integer
+Example:
+> set 0x00 9inchNails
+"9inchNails" is not an integer
+e. Numerical result out of range
+Example:
+> set 0 9999999999999999999999
+Converting "9999999999999999999999" base "0": Numerical result out of range
+f. Extra argument
+Example:
+set 0x00 0x00 extra
+Extra argument entered: extra
+Type "help" for more info
+2. Errors in Read-from-file Mode
+a. Too many arguments
+Example:
+./pa2 file file2 
+	Usage: ./pa2 [filename]
+b. Single invalid filename
+Example:
+./pa2 fake_file
+	fake_file: No such file or directory
+c. Permission denied to file
+Example:
+ ./pa2 no_permission
+	no_permission: Permission denied
+d. Invalid commands inside file
+Example:
+cat file1
+	set
+./pa2 file1
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+        Argument(s) required for this command. Type "help" for more info.
+
+Error output goes to stderr.
+==========Testing==============================================================
+1. main.c
+Generate a valid input file named "input" that contained all the functions used
+and execute for both ~/./public/pa2test and my own ./pa2. Redirect the output 
+into file named pa2testoutput and output separately. Use "diff" to compare the 
+two output files. If "diff" generates nothing, it means that the pa2 generates 
+the same output as the p2test.
+2. set.s
+a. Set one light bank
+b. Set alternating bits
+c. Set half of each bank
+d. Set both banks
+3. shift.s
+a. Shift nothing in lightbank
+b. Shift none overflow
+c. Shift pattern right 1/9/36/75
+d. Shift pattern left 1/9/36/75
+e. Shift left/right overflow
+4. rotate.s
+a. Rotate nothing in lightbank
+b. Rotate none overflow
+c. Rotate pattern right 1/9/36/75
+d. Rotate pattern left 1/9/36/75
+e. Rotate left/right overflow
+5. toggle.s
+a. Toggle both banks
+b. Don't toggle
+c. Toggle pattern
+d. Toggle alternating bits
+6. clear.s
+a. Clear entire lightbank
+b. Clear none
+c. Clear pattern
+d. Clear alternating bits
+==========Answers to questions=================================================
+1. mv oldname newname
+2. cp sourcefile newfile 
+3. It copy and selected content and then paste after cursor.
+4. The vimrc file contains optional runtime configuration settings to initialize
+   Vim when it starts. It is named .vimrc on Unix based systems.
+   To create/edit:
+   vim ~/.vimrc
+5. dd
+   P to paste before the cursor while p to paste after.
+6. In normal mode:
+   /string
+   Press 'n' to search forwards or 'N' backwards.
+   Type 'ggn' to the first match or 'GN' to the last.
+7. :set number or :set nu
+8. cd ~/fubar
+9. chmod g+r filename 
+10.Because professionals excel with integrity.

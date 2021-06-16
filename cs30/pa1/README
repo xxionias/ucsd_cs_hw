@@ -1,0 +1,77 @@
+/* 
+ * Filename:	README
+ * Author:	Xinyi Bian
+ * Userid:	cs30xfw
+ * Description: Answers 
+ * Date:	1.31.2018
+ * Source:	course website
+==========PA1 README=================================================
+Author:	Xinyi Bian
+Userid:	cs30xfw
+Date:	1.31.2018
+==========Description================================================
+PA1 takes 4 inputs from the command line and prints a diamond design
+to stdout. This assignment will require appropriate error checking
+and reporting.
+==========Compilation================================================
+cd pa1
+make
+Directories should be ~/pa1.
+Makefile tells compiler the target to compile.
+==========Run File===================================================
+./pa1 width height border_char diamond_char
+example: ./pa1 17 15 a l
+==========Normal Output==============================================
+cs30xfw@pi-cluster-031:~/pa1$ ./pa1 7 5 a n
+aaaaaaa
+aaanaaa
+aannnaa
+annnnna
+aannnaa
+aaanaaa
+aaaaaaa
+
+Normal output goes to stdout pipe.
+==========Error Output===============================================
+cs30xfw@pi-cluster-031:~/pa1$ ./pa1 7 5 a n
+aaaaaaa
+annnnna
+aannnaa
+aaanaaa
+aaaaaaa
+
+Error output goes to stderr.
+==========Testing====================================================
+Tests:
+1. Too many arguments:
+   ./pa1 7 5 a b c
+2. No arguments:
+   ./pa1
+3. Invalid width strtol conversion:
+   ./pa1 7a 5 a b
+4. Errno set in width strtol conversion:
+   ./pa1 7777777777777777777777777777777777777777 5 a b
+5. Height not less than width:
+   ./pa1 7 7 a b
+6. Border_char and diamond_char are the same:
+   ./pa1 7 5 a a 
+7. Border_char not within the range:
+   ./pa1 7 5 ' ' a
+8. Width not odd:
+   ./pa1 6 5 a b
+9. Multiple errors:
+   ./pa1 6 9 a aa
+==========Answers to questions=======================================
+1. x/s nptr
+2. p/d base
+3. p/x endptr
+4. (a) p/d num
+4. (b) p/d $r0
+5. p/c *endptr
+6. x/s endptr
+7. p/d errno
+8. git status
+9. git reset
+10. git diff
+11. I submit work that is a truthful demonstration of my knowledge
+    and abilities.

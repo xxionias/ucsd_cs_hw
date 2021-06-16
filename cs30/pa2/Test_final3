@@ -1,0 +1,3 @@
+cat Test_Cases | ./pa2 &> MYSOL
+cat Test_Cases | ~/../public/pa2test &> REFSOL
+diff MYSOL REFSOL

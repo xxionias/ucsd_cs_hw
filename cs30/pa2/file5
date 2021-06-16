@@ -1,0 +1,9 @@
+set 0xf0f0f0f0 0x01010101
+clear 0 0x01000000
+toggle 2 11
+shift -5
+shift 5
+rotate 7
+rotate -7
+ripple 3
+shift 3

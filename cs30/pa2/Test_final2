@@ -1,0 +1,3 @@
+./pa2 Test_Cases &> MYSOL
+~/../public/pa2test Test_Cases &> REFSOL
+diff MYSOL REFSOL
